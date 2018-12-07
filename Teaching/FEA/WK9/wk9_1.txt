@@ -1,0 +1,119 @@
+!* FEA computer laboratory D5 problem
+!*
+!* DYNAMIC ANALYSIS OF A BUILT-IN PLATE
+!* TRANSIENT ANALASYS WITH DISPLACEMENT ANALYSIS
+!*
+!* created by Tamas Poloskei
+!* 2017. April 04.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+
+/COM,  Structural   
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15
+!*
+!* define parameters
+a = 800
+b = 400
+t = 10
+E1 = 2E5
+nu1 = 0.3
+rho = 8E-3
+v0 = 20
+!*
+/PREP7  
+!*
+!* define element type
+ET,1,SHELL181
+!*
+!*  defining the thickness
+R,1,t,  
+!*
+!* define the material properties
+!* elasticity
+!* Temperatures must be defined first
+MPTEMP
+MPTEMP,1,0  
+MPDATA,EX,1,,E1 
+MPDATA,PRXY,1,,NU1 
+!*
+!* density
+!* Temperatures must be defined first
+MPTEMP  
+MPTEMP,1,0  
+MPDATA,DENS,1,,RHO  
+!*
+!* create keypoints
+K,1,0,0,0
+K,2,0,0,b
+K,3,a,0,b
+K,4,a,0,0
+!*
+!* create area, arbitrary
+A,1,2,3,4
+!*
+!* set number of elements of edges
+LESIZE,1,,,4
+LESIZE,3,,,4
+LESIZE,2,,,8
+LESIZE,4,,,8
+!*
+!* mesh the areas using mapped algorithm
+MSHAPE,0,2D 
+MSHKEY,1
+AMESH,1
+!*
+!* set kinematic constraints
+DL,1, ,ALL,0 
+!*
+FINISH 
+!*
+/SOL
+!*
+!* transient analysis  
+ANTYPE,4
+!*  
+TRNOPT,FULL 
+LUMPM,0 
+!*
+!* timestep size
+DELTIM,0.005,0,0
+OUTRES,ALL,ALL
+!*
+!* auto timesteppinng
+AUTOTS,1
+!*
+!* stiffness matrix coefficient
+BETAD,0.0002
+KBC,0
+!*
+!* time at the end of thhe step
+TIME,0.025
+!*
+!* set displacement value
+DL,1, ,UY,v0 
+!*
+!* write load step file
+LSWRITE,1,
+!*
+!* time at the end of the 2nd loadstep
+!* everything else remains the same
+TIME,0.05 
+!*
+!* set displacement value
+DL,1, ,ALL,0 
+!*
+!* write load step file
+LSWRITE,2,
+TIME,.2
+LSWRITE,3
+LSSOLVE,1,3,1,
+!*
+!* animate results
+/POST1
+/VIEW,1,1,2,3   
+/ANG,1  
+PLNS,U,Y
+ANTIME,100,0.5, ,1,0,0,0 

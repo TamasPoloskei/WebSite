@@ -1,0 +1,94 @@
+!* FEA computer laboratory ST1 problem
+!*
+!* BUCKLING ANALYSIS OF A RECTANGULAR PLATE
+!*
+!* created by Tamas Poloskei
+!* 2017. March 01.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!*
+/COM,  Structural   
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+!* parameters
+ELAST = 2E5
+NU = 0.3
+A = 1000
+B = 300
+T = 3
+!*
+/PREP7
+!* select element type
+ET,1,SHELL181
+!*  
+!* linear elastic material model
+MPTEMP 
+MPTEMP,1,0  
+MPDATA,EX,1,,ELAST  
+MPDATA,PRXY,1,,NU  
+!*
+!* thickness definition
+sect,1,shell,,  
+secdata, T,1,0.0,3 
+secoffset,MID   
+seccontrol
+!*
+!* create rectangle area
+BLC4,0,0,A,B
+!* set element number on the sides
+LESIZE,1,,,20
+LESIZE,3,,,20
+LESIZE,2,,,5
+LESIZE,4,,,5
+!*
+!* mesh the areas using mapped meshing algorithm
+MSHKEY,1
+AMESH,ALL
+!*
+!* kinematic constraints
+DL,4,,UX,0
+DL,4,,UZ,0
+DL,4,,ROTZ,0
+!*
+DL,1,,UY,0
+DL,1,,UZ,0
+DL,1,,ROTZ,0
+!*
+DL,3,,UY,0
+DL,3,,UZ,0
+DL,3,,ROTZ,0
+!*
+DL,2,,UZ,0
+DL,2,,ROTZ,0
+!*
+!* loading definition
+SFL,2,PRES,1
+FINISH
+!*
+!* calculate prestress effect
+/SOL
+PSTRES,1
+/STATUS,SOLU
+SOLVE   
+FINISH
+!*  
+!* eigen buckling analysis
+/SOL
+ANTYPE,1
+!*  extract four modes
+BUCOPT,LANB,4,0,0,CENTER
+MXPAND,4,0,0,0,0.001,   
+/STATUS,SOLU
+SOLVE
+/POST1
+SET,FIRST   
+!*
+!* printing the eigenshapes
+*DO, III, 1, 4,1
+	PLNSOL, U,SUM, 1,1.0  
+	/IMAGE,SAVE,strcat(chrval(III),'_ST3'),bmp
+	SET,NEXT
+*ENDDO

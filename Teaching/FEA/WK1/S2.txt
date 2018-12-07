@@ -1,0 +1,131 @@
+!* FEA computer laboratory S2 problem
+!*
+!* 3D BEAM STRUCTURE MADE OF I-SECTION BEAMS
+!*
+!* created by Tamas Poloskei
+!* 2017. February 9.
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!*
+ELAST = 2E5
+NU = 0.3
+F = 10000
+W1 = 50
+W2 = 50
+W3 = 100
+t1 = 6.8
+t2 = 6.8
+t3 = 4.5
+PI = 4*ATAN(1)
+
+/COM,Structural
+
+/PREP7
+!*  set element type
+ET,1,BEAM189
+
+!* define the I-section
+SECTYPE,1,BEAM,I 
+SECOFFSET, CENT 
+SECDATA,W1,W2,W3,t1,t2,t3
+
+!* define the material properties
+!* elasticity
+!* Temperatures must be defined first
+MPTEMP
+MPTEMP,1,0  
+MPDATA,EX,1, ,ELAST  
+MPDATA,PRXY,1, ,NU  
+!* create the keypoints
+K,1,577.3*SIN(180/180*PI),0,577.3*COS(180/180*PI)
+K,2,577.3*SIN(300/180*PI),0,577.3*COS(300/180*PI)
+K,3,577.3*SIN(60/180*PI),0,577.3*COS(60/180*PI)
+K,4,0,4000,0
+K,5,0,0,0  
+!* create the lines
+L,1,4
+L,2,4
+L,3,4
+!* element resolution
+LESIZE,ALL, , ,20
+!* define the orientation
+LATT,1, ,1, ,5, ,1   
+!* mesh lines
+LMESH,ALL
+!* kinematic constraints
+DK,1,ALL
+DK,2,ALL
+DK,3,ALL
+!* loading definition
+FK,4,FZ,F
+FINISH
+!* solve the finite element equation K.U = F
+/SOL
+SOLVE
+!* postprocessing
+/POST1
+!* define the element tables
+ETABLE,FXI,SMISC, 1 
+ETABLE,FXJ,SMISC, 14
+!*
+ETABLE,MZI,SMISC, 3 
+ETABLE,MZJ,SMISC, 16
+!*
+ETABLE,SFYI,SMISC, 6 
+ETABLE,SFYJ,SMISC, 19
+!*
+ETABLE,EXI,SMISC, 7 
+ETABLE,EXJ,SMISC, 20
+!*
+ETABLE,EPELBYTI,SMISC, 42 
+ETABLE,EPELBYTJ,SMISC, 47
+!*
+ETABLE,EPELBYBI,SMISC, 43 
+ETABLE,EPELBYBJ,SMISC, 48
+!*
+ETABLE,SDIRI,SMISC, 31 
+ETABLE,SDIRJ,SMISC, 36
+!*
+ETABLE,SBYTI,SMISC, 32 
+ETABLE,SBYTJ,SMISC, 37
+!*
+ETABLE,SBYBI,SMISC, 33 
+ETABLE,SBYBJ,SMISC, 38
+!* plotting the element tables on the structure and saving them as pictures in the project's folder
+!* be aware that on my computer the size of the pictures were ~1.4MB
+!* changing the background color to white
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*selecting oblique view
+/VIEW,1,1,2,3     
+/REPLOT,FAST  
+!*
+PLLS,FXI,FXJ,1,0,0  
+/IMAGE,SAVE,axial_force,bmp  
+!*
+PLLS,MZI,MZJ,1,0,0  
+/IMAGE,SAVE,bending_moment,bmp  
+!*
+PLLS,SFYI,SFYJ,1,0,0  
+/IMAGE,SAVE,shear_force,bmp  
+!*
+PLLS,SFYI,SFYJ,1,0,0  
+/IMAGE,SAVE,shear_force,bmp  
+!*
+PLLS,EXI,EXJ,1,0,0  
+/IMAGE,SAVE,axial_strain,bmp  
+!*
+PLLS,EPELBYTI,EPELBYTJ,1,0,0  
+/IMAGE,SAVE,bending_strain_top,bmp  
+!*
+PLLS,EPELBYBI,EPELBYBJ,1,0,0
+/IMAGE,SAVE,bending_strain_bottom,bmp
+!*
+PLLS,SDIRI,SDIRJ,1,0,0
+/IMAGE,SAVE,axial_stress,bmp
+!*
+PLLS,SBYTI,SBYTJ,1,0,0
+/IMAGE,SAVE,bending_stress_top,bmp
+!*
+PLLS,SBYBI,SBYBJ,1,0,0
+/IMAGE,SAVE,bending_stress_bottom,bmp

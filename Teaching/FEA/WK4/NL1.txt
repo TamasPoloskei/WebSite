@@ -1,0 +1,146 @@
+!* FEA computer laboratory NL1 problem
+!*
+!* POST-BUCKLING ANALYSIS OF A PINNED-PINNED BEAM
+!*
+!* created by Tamas Poloskei
+!* 2017. February 28.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nm],[N/m^2=Pa],[N/m]
+!*
+/COM,  Structural   
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+ELAST=200E9
+NU = 0.3
+L = 3
+A = 2/100
+B = 5/100
+FCR = 7337.2
+/PREP7  
+!*  
+ET,1,BEAM188
+!*
+!* define the rectangular crossection
+SECTYPE,1,BEAM,RECT 
+SECOFFSET,CENT 
+SECDATA,A,B
+!*  
+!* linear elastic material model
+MPTEMP 
+MPTEMP,1,0  
+MPDATA,EX,1,,ELAST  
+MPDATA,PRXY,1,,NU  
+!*
+!* create keypoints
+K,1,0,0,0
+K,2,L,0,0
+!*
+!* create line
+L,1,2
+!*
+!* set number of elements
+LESIZE,1,,,20
+LMESH,1
+!*
+!* apply geometric constraints
+DK,1,UX,0
+DK,1,UY,0
+DK,2,UY,0
+D,ALL,UZ,0,
+D,ALL,ROTX,0
+D,ALL,ROTY,0
+!*
+!* apply load
+FK,2,FX,-1000
+FINISH
+!*
+!* calculate prestress effect
+/SOL
+PSTRES,1
+/STATUS,SOLU
+SOLVE   
+FINISH
+!*  
+!* eigen buckling analysis
+/SOL
+ANTYPE,1
+!*  extract four modes
+BUCOPT,LANB,4,0,0,CENTER
+MXPAND,4,0,0,0,0.001,   
+/STATUS,SOLU
+SOLVE   
+/POST1
+!* print mode shapes with undeformed edge
+SET,FIRST
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_1,bmp
+SET,NEXT
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_2,bmp
+SET,NEXT
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_3,bmp
+SET,NEXT
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_4,bmp
+FINISH  
+/SOL
+!* static analysis
+ANTYPE,0
+NLGEOM,1
+NSUBST,10,10,10 
+NEQIT,150   
+TIME,5  
+FINISH
+/PREP7
+!* delete load at the end keypoint
+FKDELE,2,ALL 
+!* apply concentrated force at the middle node
+F,12,FY,100
+FINISH  
+/SOL
+LSWRITE,1
+!*
+TIME,10 
+FINISH
+/PREP7
+!* apply the force at the end
+FK,2,FX,-(99.65/100)*FCR
+FINISH  
+/SOL
+LSWRITE,2
+!*
+!* between the pseudo time 10 and 20 nothing happens
+TIME,20
+!*
+!* write 
+LSWRITE,3
+!*
+TIME,30
+FINISH
+/PREP7
+!*
+!* remove the load at the middle of the beam
+FDELE,12,FY
+FINISH  
+/SOL
+LSWRITE,4
+!*
+TIME,50
+FINISH
+/PREP7
+!*
+!* remove the load from the end
+FKDELE,2,FX
+FINISH  
+/SOL
+LSWRITE,5
+!*
+!* solve 
+LSSOLVE,1,5,1
+!*
+!* time history post processing
+/POST26

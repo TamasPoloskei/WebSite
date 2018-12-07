@@ -1,0 +1,46 @@
+/PREP7  
+!*
+ET,1,PLANE183   
+!*  
+KEYOPT,1,3,3
+!*  
+!*  
+R,1,10, 
+!*  
+*SET,d,150
+!*  
+MPTEMP,,,,,,,,  
+MPTEMP,1,0  
+MPDATA,EX,1,,200E3  
+MPDATA,PRXY,1,,0.3  
+K,1,100,,,  
+K,2,100+d/2,d/2,,   
+K,3,100+d/2,0,, 
+K,4,200,d/2,,   
+K,5,200,200,,   
+K,6,0,200,, 
+K,7,0,0,,  
+LSTR,       7,       1  
+!*  
+LARC,1,2,3,d/2, 
+LSTR,       2,       4  
+LSTR,       4,       5  
+LSTR,       5,       6  
+LSTR,       6,       7  
+AL,1,2,3,4,5,6
+AESIZE,1,5
+AMESH,1
+DL, 1, , UY, 0
+DL, 6, , UX, 0
+SFL, 5, PRES, -50
+FINISH
+/SOL
+SOLVE
+/POST1
+PLNSOL, S, Y, 0, 1.0
+
+PATH,SZIMM,2,30,100,
+PPATH,1,0,0,0,,0,   
+PPATH,2,0,100,0,,0, 
+PDEF,SIGY,S,Y,AVG   
+PLPATH,SIGY 

@@ -1,0 +1,124 @@
+!* FEA computer laboratory NL6 problem
+!*
+!* FRACTURE MECHANICAL ANALYSIS OF A CRACKED PLATE
+!*
+!* created by Tamas Poloskei
+!* 2017. May 3.
+!*
+!* covert everything to a consistent unit system
+!* [N], [Nmm], [N/mm^2=MPa], [N/mm]
+!*
+/COM,  Structural   
+!*  
+/PREP7 
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15
+!*
+A = 130
+B = 640
+C = 25
+D = 320
+P = 10
+ELAST = 207E3
+NU = 0.3
+!*
+!* select element
+ET,1,PLANE182   
+!*  
+!* set element behaviour (plain strain)
+KEYOPT,1,3,2
+!*
+!* define material properties
+MPTEMP
+MPTEMP,1,0  
+MPDATA,EX,1,,ELAST  
+MPDATA,PRXY,1,,NU   
+!*
+!* set the angular unit
+*AFUN,DEG
+!*
+!* define keypoints
+K,1,0,D+C*SIN(45)/2
+K,2,C*COS(45),D-C*SIN(45)/2
+K,3,0,D+C*SIN(45)/2
+K,4,0,0
+K,5,A,0
+K,6,A,D-((A-C*COS(45))*TAN(45) + C*SIN(45)/2)
+K,7,A,B
+K,8,0,B
+!*
+!* create lines
+L,4,5
+L,5,6
+L,6,2
+L,2,1
+L,1,4
+L,6,7
+L,7,8
+L,8,3
+L,3,2
+!*
+!* create the areas
+AL,1,2,3,4,5
+AL,6,7,8,9,3
+!*
+!* create local coorinate system
+CSKP,11,0,2,6,7
+!*
+CSYS,0
+!*
+!* concentrate mesh around a keypoint
+KSCON,2,1.3,1,6,0,
+!*
+KESIZE,1,8.5
+KESIZE,3,8.5
+KESIZE,2,0.85
+!*
+MOPT,AMESH,MAIN
+MSHAPE,1,2D
+!*
+AMESH,ALL
+!*
+NSEL,S,LOC,Y,0  
+D,ALL,UY,0
+NSEL,R,LOC,X,0
+D,ALL,UX,0
+!*
+NSEL,S,LOC,Y,B
+SF,ALL,PRES,-P
+!*
+ALLSEL,ALL
+FINISH
+!*
+/SOL
+SOLVE
+/POST1
+CSYS,11
+!*
+RSYS,11
+!*
+FLST,2,5,1  
+FITEM,2,9   
+FITEM,2,157 
+FITEM,2,156 
+FITEM,2,24  
+FITEM,2,25  
+!*  
+PATH,crack,5,30,100, 
+PPATH,P51X,1
+!*  
+KCALC,0,1,3,0   
+!*
+FLST,2,2,1  
+FITEM,2,9   
+FITEM,2,33   
+!*  
+PATH,behind,2,30,100,   
+PPATH,P51X,1
+PATH,STAT   
+!*
+PDEF,,S,Y,AVG
+/PBC,PATH, ,0   
+!*  
+PLPATH,SY   

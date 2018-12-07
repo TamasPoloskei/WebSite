@@ -1,0 +1,194 @@
+!* FEA computer laboratory NL4 problem
+!*
+!* IMPACT OF A SQUARE BLOCK WITH AN ELASTIC BEAM
+!*
+!* created by Tamas Poloskei
+!* 2017. April 11.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nm],[N/m^2=Pa],[N/m]
+!*
+/COM,  Structural   
+!*  
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+ELAST = 70E9
+NU = 0.3
+H = 0.025
+V = 0.025
+RHO = 2700
+!*
+/PREP7  
+
+!* define elements
+!* beam element
+ET,1,BEAM188
+!*  
+!* plane element, plane stress 
+ET,2,PLANE182   
+!*  
+KEYOPT,2,1,0
+KEYOPT,2,3,3
+KEYOPT,2,6,0
+!*  
+!* contact element
+ET,3,CONTA171   
+!*  
+! target element
+ET, 4, TARGE169   
+!*
+TYPE, 3
+TSHAP, LINE  
+TYPE, 4
+TSHAP, LINE  
+!*
+!* define crossection
+SECTYPE, 1, BEAM, RECT
+SECOFFSET, CENT 
+SECDATA, V, V 
+!*
+!* set the thickness of the plane element
+R,1,H
+!*
+!* set the penalty stiffness factor of the contact element
+R,2,,,2000
+!
+!* define the material properties
+!* elasticity
+!* Temperatures must be defined first
+MPTEMP
+MPTEMP,1,0
+MPDATA,EX,1,,ELAST
+MPDATA,PRXY,1,,NU
+!*
+!* density
+MPTEMP
+MPTEMP,1,0
+MPDATA,DENS,1,,RHO
+!*
+!* create keypoints
+K,1,0,0,0
+K,2,2.5,0,0
+!*
+!* create line
+L,1,2
+!*
+!* create rectangle
+RECTNG,1.4,1.55,2.5,2.65
+!*
+!* set element number on lines
+LESIZE,1,,,80
+*DO, III,2,5
+LESIZE,III,,,1
+*ENDDO
+!* mesh the line
+TYPE,1
+MAT,1
+SECN,1
+LMESH, 1
+!*
+!* mesh the area
+TYPE, 2
+REAL, 1
+AMESH,1
+!*
+!* set element attributes for the contact and target element
+!*
+ALLSEL,ALL  
+!*
+!* select nodes on the beam
+NSEL,S,LOC,Y,0  
+!*
+TYPE,4
+REAL,2
+ESURF
+!*
+ALLSEL,ALL  
+!* select nodes on the rectangle
+NSEL,S,LOC,Y,2.5,2.65 
+!*
+TYPE,3
+REAL,2
+ESURF 
+!*
+ALLSEL,ALL
+MODMSH,DETACH   
+FINISH
+/SOL
+!*
+ANTYPE,4
+!*
+TRNOPT,FULL
+LUMPM,1
+!*
+!* fix the ends of the beam
+!* left
+NSEL,S,LOC,X,0
+D,ALL, ALL, 0
+ALLSEL, ALL
+!* right
+NSEL,S,LOC,X,2.5
+D,ALL, ALL, 0
+ALLSEL, ALL
+!* fix UZ at every node
+D, ALL, UZ, 0
+!*
+!* fix the nodes of rectangle
+NSEL,S,LOC,Y,2.5,2.65 
+D,ALL,ALL,0
+ALLSEL,ALL
+!*
+ACEL,0,9.81,0
+!*  
+CNVTOL,F,,0.0001,2 
+!*  
+ANTYPE,4
+NLGEOM,1
+DELTIM,0.0001,0.00001,0.0001
+ALPHAD,0.4
+KBC,1.0 
+TIME,0.0002 
+TIMINT,0
+TINTP,0.015
+SOLVE
+!*
+!* delete constraints on the nodes of the rectangle
+NSEL,S,LOC,Y,2.5,2.65 
+DDELE,ALL,ALL
+D, ALL, UZ, 0
+ALLSEL,ALL
+!*
+CNVTOL,,-1,1
+DELTIM,0.002,0.00002,0.002 
+OUTRES,ALL,ALL  
+AUTOTS,1
+KBC,0.0 
+PRED,ON,,ON 
+TIME,1.8
+TIMINT,1
+SOLVE   
+/POST1
+SET,,,,,,,383
+
+/POST26
+NSOL,2,84,U,Y, UY_TR
+STORE,MERGE 
+!*  
+NSOL,3,85,U,Y, UY_TL
+STORE,MERGE 
+!*  
+NSOL,4,82,U,Y, UY_BL 
+STORE,MERGE 
+!*  
+NSOL,5,83,U,Y, UY_BR
+STORE,MERGE 
+XVAR,1  
+PLVAR,2,3,4,5
+NSOL,6,42,U,Y, UY_BR
+STORE,MERGE 
+XVAR,1  
+PLVAR,6
+A = 0.15
+M = RHO*A*A*V
+THETA = 1/6*M*A*A

@@ -1,0 +1,193 @@
+!* FEA computer laboratory S2 problem
+!*
+!* PERFORATED PLATE SUBJECTED TO COMBINED MECHANICAL AND THERMAL LOAD
+!*
+!* created by Tamas Poloskei
+!* 2017. March 22.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!*
+T = 10
+ELAST = 2E5
+NU = 0.3
+ALPHA = 1.5E-5
+P = 10
+THETA = 50
+G = 9810
+RHO = 8E-9
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+/COM,  Structural
+/COM,  Thermal  
+!*
+/PREP7  
+!* element type definition
+ET,1,PLANE182   
+!*
+!* set element behaviour (plane stress)
+KEYOPT,1,1,0
+KEYOPT,1,3,3
+KEYOPT,1,6,0
+!*
+!* set element thickness
+R,1,T,  
+!*
+!* define the material properties
+!* elasticity
+!* 'Temperatures' must be defined first
+MPTEMP,
+MPTEMP,1 
+MPDATA,EX,1,,ELAST  
+MPDATA,PRXY,1,,NU
+!*
+!* density
+MPTEMP,
+MPTEMP,1 
+MPDATA,DENS,1,,RHO
+!*
+!* secant coefficient
+MPTEMP,
+MPTEMP,1
+UIMP,1,REFT,,,0 
+MPDE,ALPX,1 
+MPDATA,ALPX,1,,ALPHA
+!*
+!* create keypoints
+K,1,0,-100,0
+K,2,0,100,0
+K,3,-500,100,0
+K,4,-500,-50,0
+K,5,-250,-100
+!*
+!* create areas
+A,1,2,3,4,5
+CYL4,-250,0,40  
+CYL4,-100,0,40  
+A,7,9,13,11 
+!* subtract area
+ASBA,1,2
+ASBA,5,3
+ASBA,1,4
+!*
+!* reflect area
+ARSYM,X,2
+!*
+!* merge keypoints at the symmetry plane
+NUMMRG,KP,0.01, , ,LOW 
+!*
+!* divide horizontal lines into two
+LDIV,2,0.5,,2
+LDIV,5,0.5,,2
+!*
+!* create vertical lines
+L,6,7
+L,9,5
+!*
+L,12,17
+L,22,16
+!*
+!* divide areas with lines
+FLST,3,2,4,ORDE,2   
+FITEM,3,24  
+FITEM,3,25 
+ASBL,2,P51X
+!*
+FLST,3,2,4,ORDE,2   
+FITEM,3,26  
+FITEM,3,27 
+ASBL,1,P51X
+!*
+!* mesh areas using Smartsize and quad elements
+SMRT,2  
+MSHAPE,0,2D 
+MSHKEY,0
+AMESH,ALL
+!*
+!* kinematic constraints
+DL,3,,ALL,0
+DL,11,,ALL,0
+!*
+!* 1st loadstep
+SFL,2,PRES,P
+SFL,9,PRES,P
+!* create loadstep
+LSWRITE,1
+!* delete pressure from the horizontal lines
+SFLDELE,2,PRES   
+SFLDELE,9,PRES
+!*
+!* 2nd loadstep
+ACEL,0,G,0
+!* create loadstep
+LSWRITE,2
+!* set acceleration to zero
+ACEL,0,0,0
+!*
+!* 3rd loadstep
+!* reference temperature
+TREF,0
+!* set temperature on nodes
+BF,ALL,TEMP,THETA
+!* create loadstep
+LSWRITE,3
+FINISH
+!* solve loadsteps from 1 to 3
+/SOL
+LSSOLVE,1,3,1
+!*
+!* create the loadcases for the postprocessing operations
+/POST1
+LCDEF,1,1,LAST 
+LCDEF,2,2,LAST 
+LCDEF,3,3,LAST
+!*
+!* create path in the symmetry plane
+PATH,SYMM,2,30,100, 
+PPATH,1,0,0,-100,0,0,   
+PPATH,2,0,0,100,0,0,
+!* plot deformed shapes and sigma_x in the simmetry plane
+LCASE,1
+PLNSOL, U,X,0,1.0
+/IMAGE,SAVE,lc1_ux,bmp
+PLNSOL, U,Y,0,1.0
+/IMAGE,SAVE,lc1_uy,bmp
+PDEF,SX,S,X,AVG
+!*  
+PLPATH,SX
+/IMAGE,SAVE,lc1_sx,bmp
+!*
+LCASE,2
+PLNSOL, U,X,0,1.0
+/IMAGE,SAVE,lc2_ux,bmp
+PLNSOL, U,Y,0,1.0
+/IMAGE,SAVE,lc2_uy,bmp
+PDEF,SX,S,X,AVG
+!*  
+PLPATH,SX
+/IMAGE,SAVE,lc2_sx,bmp
+!*
+LCASE,3
+PLNSOL, U,X,0,1.0
+/IMAGE,SAVE,lc3_ux,bmp
+PLNSOL, U,Y,0,1.0
+/IMAGE,SAVE,lc3_uy,bmp
+PDEF,SX,S,X,AVG
+!*  
+PLPATH,SX
+/IMAGE,SAVE,lc3_sx,bmp
+!*
+!* create the combination of the three
+LCASE,1 
+LCOPER,ADD,2
+LCOPER,ADD,3
+PLNSOL, U,X,0,1.0
+/IMAGE,SAVE,lc123_ux,bmp
+PLNSOL, U,Y,0,1.0
+/IMAGE,SAVE,lc123_uy,bmp
+PDEF,SX,S,X,AVG
+!*  
+PLPATH,SX
+/IMAGE,SAVE,lc123_sx,bmp

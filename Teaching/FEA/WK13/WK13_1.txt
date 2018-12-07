@@ -1,0 +1,160 @@
+!* FEA computer laboratory NL6 problem
+!*
+!* POST BUCKLING OF A PLATE WITH CENTRAL HOLE
+!*
+!* created by Tamas Poloskei
+!* 2017. May 2.
+!*
+!* covert everything to a consistent unit system
+!* [N], [Nm], [N/m^2=Pa], [N/m]
+!*
+/COM,  Structural   
+!*  
+/PREP7 
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+! scalar parameters
+A = 0.25
+R = 0.04
+t1 = 0.25/1000
+t = 3/1000
+Exx = 127.6E9
+Eyy = 11.03E9
+Ezz = 11.03E9
+nuxy = 0.27
+nuyz = 0.03
+nuxz = 0.03
+Gxy = 5.74E9
+Gyz = 5.74E9
+Gxz = 5.74E9
+!*  
+!* define element type
+ET,1,SHELL181   
+!*  
+!* set K8 option
+KEYOPT,1,1,0
+KEYOPT,1,3,0
+KEYOPT,1,8,1
+KEYOPT,1,9,0
+!*
+ESYS,0
+!*  
+MPTEMP,,,,,,,,  
+MPTEMP,1,0  
+MPDATA,EX,1,,Exx
+MPDATA,EY,1,,Eyy
+MPDATA,EZ,1,,Ezz
+MPDATA,NUXY,1,,nuxy 
+MPDATA,NUYZ,1,,nuyz 
+MPDATA,NUXZ,1,,nuxz 
+MPDATA,GXY,1,,Gxy   
+MPDATA,GYZ,1,,Gyz   
+MPDATA,GXZ,1,,Gxz
+!*
+!* define layup
+sect,1,shell
+secdata, t1,1,30,3  
+secdata, t1,1,-30,3 
+secdata, t1,1,30,3  
+secdata, t1,1,-30,3 
+secdata, t1,1,30,3  
+secdata, t1,1,-30,3 
+secdata, t1,1,-30,3 
+secdata, t1,1,30,3  
+secdata, t1,1,-30,3 
+secdata, t1,1,30,3  
+secdata, t1,1,-30,3 
+secdata, t1,1,30,3  
+secoffset,MID   
+seccontrol
+!*
+SECPLOT, 1
+/IMAGE,SAVE,layup,bmp
+!*
+!* create keypoints
+K,1,0,0,0
+K,2,A,0,0
+K,3,A,A,0
+K,4,0,A,0
+A,1,2,3,4
+!*
+!* create solid circle
+CYL4,A/2,A/2,R  
+!*
+!* subtract circle from rectangle
+ASBA, 1, 2
+!*
+!* compress all numbers
+NUMCMP,ALL
+!*
+!* set element numbers
+LESIZE,1,,,20
+LESIZE,2,,,20
+LESIZE,3,,,20
+LESIZE,4,,,20
+!*
+LESIZE,5,,,10
+LESIZE,6,,,10
+LESIZE,7,,,10
+LESIZE,8,,,10
+!*
+!* mesh area
+AMESH,1
+!*
+!* detach mesh
+MODMSH,DETACH
+!*
+!* macro
+*GET,NNUMBER,NODE,0,NUM,MAX
+PI = 4*ATAN(1)
+*DO,I,1,NNUMBER
+*GET,TMPX,NODE,I,LOC,X
+*GET,TMPY,NODE,I,LOC,Y
+TMPZ = SIN(PI*NX(I)/A)*SIN(PI*NY(I)/A)*(3E-5)
+N,I,NX(I),NY(I),TMPZ
+*ENDDO
+!*
+FINISH
+!*
+/SOLU   
+!*  
+ANTYPE,0
+NLGEOM,1
+NSUBST,100,1000,100
+OUTRES,ALL,ALL
+!* kinematic constraints
+NSEL,S,LOC,X,0
+D,ALL,ALL,0
+!*
+NSEL,S,LOC,Y,0
+D,ALL,UZ,0
+D,ALL,ROTX,0
+!*
+NSEL,S,LOC,Y,A
+D,ALL,UZ,0
+D,ALL,ROTX,0
+!*
+NSEL,S,LOC,X,A
+D,ALL,UZ,0
+D,ALL,ROTX,0
+D,ALL,ROTY,0
+!*
+ALLSEL,ALL
+D,ALL,ROTZ,0
+!*
+!* loading definition
+NSEL,S,LOC,X,A
+NSEL,R,LOC,Y,A/2
+F,ALL,FX,-500000
+!*
+!* couple x displacements
+NSEL,S,LOC,X,A
+/PREP7
+CP,1,UX,ALL
+!*
+ALLSEL,ALL
+FINISH
+/SOL
+SOLVE

@@ -1,0 +1,133 @@
+!* FEA computer laboratory ST4 problem
+!*
+!* STABILITY ANALYSIS OF A CYLINDRICAL SHELL
+!*
+!* created by Tamas Poloskei
+!* 2017. February 28.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!*
+/COM,  Structural   
+!*
+D = 100
+H = 150
+T = 1
+ELAST = 210E3
+NU = 0.3
+/PREP7
+!*
+/VIEW,1,1,1,1   
+/ANG,1  
+/REP,FAST 
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+!* set element type
+ET,1,SHELL181   
+!*  
+!* linear elastic material model
+MPTEMP 
+MPTEMP,1,0  
+MPDATA,EX,1,,ELAST  
+MPDATA,PRXY,1,,NU  
+!*
+!* thickness definition
+sect,1,shell,,  
+secdata, T,1,0.0,3 
+secoffset,MID   
+seccontrol
+!*
+!*  create keypoints
+K,1,0,0,0
+K,2,0,0,H
+!*
+!* create circle
+CIRCLE,1,D/2,,,360,4
+!*
+!* create line to be swept along
+L,1,2
+!*
+!* extrude the lines of the circle
+ADRAG,1,2,3,4,,,5
+!*
+!* set the number of elements on each line
+LESIZE,1,,,10
+LESIZE,2,,,10
+LESIZE,3,,,10
+LESIZE,4,,,10
+LESIZE,6,,,10
+LESIZE,9,,,10
+LESIZE,11,,,10
+LESIZE,13,,,10
+LESIZE,7,,,20
+LESIZE,8,,,20
+LESIZE,10,,,20
+LESIZE,12,,,20
+!*
+!* mesh areas as mapped
+MSHKEY,1
+AMESH,ALL
+!*
+!* activate cylindrical coordinate system
+CSYS,1
+!*
+!* before element orientation
+/PSYMB,ESYS,1   
+GPLOT 
+!* rotate every elements local coordinatesystem
+NROTAT,ALL
+GPLOT 
+!*
+!* kinematic constraints
+!*
+!* bottom edge
+*DO, III, 1, 4
+DL,III, ,UX,0  
+DL,III, ,UY,0
+DL,III, ,UZ,0
+*ENDDO
+!*
+!* uncomment the next lines to apply the b) exercise's constraints
+!* DL,6, ,UX,0  
+!* DL,6, ,UY,0
+!* DL,6, ,UY,0
+!* *DO, III, 9, 13, 2
+!* DL,III, ,UX,0  
+!* DL,III, ,UY,0
+!* DL,III, ,UY,0
+!* *ENDDO
+!*
+!* apply loads
+SFA,ALL,1,PRES,-1
+FINISH  
+!*
+!* activate prestress effects
+/SOL
+PSTRES,1
+/STATUS,SOLU
+SOLVE   
+FINISH
+!*  
+!* eigen buckling 
+/SOL
+ANTYPE,1
+!*  extract four modes
+BUCOPT,LANB,4,0,0,CENTER
+MXPAND,4,0,0,0,0.001,   
+/STATUS,SOLU
+SOLVE   
+/POST1
+SET,FIRST
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_1,bmp
+SET,NEXT
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_2,bmp
+SET,NEXT
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_3,bmp
+SET,NEXT
+PLNSOL, U,SUM, 2,1.0
+/IMAGE,SAVE,eigenshape_4,bmp

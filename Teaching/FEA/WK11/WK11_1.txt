@@ -1,0 +1,150 @@
+!* FEA computer laboratory NL4 problem
+!*
+!* CONTACT PROBLEM OF A BALL AND A DISK
+!*
+!* created by Tamas Poloskei
+!* 2017. April 18.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+ELAST = 2.1E5
+NU = 0.3
+F = 6000
+
+/COM,  Structural
+!*
+/PREP7
+!*
+!* define element types
+!*
+ET,1,PLANE182   
+!*  
+KEYOPT,1,1,0
+KEYOPT,1,3,1
+KEYOPT,1,6,0
+!*  
+ET,2,TARGE169   
+!*  
+ET,3,CONTA175   
+!*
+!*
+!* define the material properties
+!* elasticity
+!* Temperatures must be defined first
+MPTEMP
+MPTEMP,1,0
+MPDATA,EX,1,,ELAST
+MPDATA,PRXY,1,,NU
+!*
+!* create rectangle areas
+BLC4,0,-5,5,5   
+BLC4,5,-5,15,5
+!*
+!* glue areas
+AGLUE,1,2
+!*
+!* create new keypoints
+K,5,0,10,0
+K,8,10,10,0
+K,9,0,0,0
+!*
+!* create arc
+LARC,8,9,5,10
+!* create straight lines
+L,9,5
+L,5,8
+!*
+!* divide the arc (L5)
+LDIV,5,2/3, ,2
+!*
+L,5,10
+!*
+!* create areas with (keypoints) lines
+AL,7,11,12
+AL,12,5,8
+!*
+!* number of element divisions
+!* along the circular arc
+LESIZE,11,,,12
+LESIZE,5,,,12
+!*
+!* along the radial direction
+LESIZE,7,,,12
+LESIZE,8,,,12
+LESIZE,12,,,12
+!*
+!*horizontal line
+LESIZE,1,,,6
+LESIZE,3,,,6
+LESIZE,9,,,12
+LESIZE,10,,,12
+!*
+!* vertical line
+LESIZE,4,,,6
+LESIZE,2,,,6
+LESIZE,6,,,6
+!*
+!* mesh areas using mapped algorithm
+MSHKEY,1
+AMESH,ALL
+!*
+ALLSEL,ALL 
+!*
+!* select line
+LSEL,S,,,11
+!*
+!* select nodes attached to it
+NSLL,S,1
+TYPE,3
+ESUR
+!*
+ALLSEL,ALL
+!*
+!* select line
+LSEL,S,,,3
+!*
+!* select nodes attached to it
+NSLL,S,1
+TYPE,2
+ESUR
+!*
+ALLSEL,ALL
+!*
+!* kinematic constraints
+DK,6,UY,0
+!*
+!* impose identical UY displacement on line 8
+LSEL,S,,,8
+NSLL,S,1
+!*
+CP,1,UY,ALL
+!*
+ALLSEL,ALL
+!* load case 1
+LSEL,S,,,8
+NSLL,S,1
+D,ALL,UY,-0.005
+ALLSEL,ALL
+FINISH 
+!*
+/SOL
+SOLVE
+!*
+!* load case 2
+/PREP7
+!* delete displacement constraint
+LSEL,S,,,8
+NSLL,S,1
+DDELE,ALL,ALL
+ALLSEL,ALL
+FK,5,FY,-F
+FINISH  
+/SOL
+ANTYPE,0
+NLGEOM,1
+NSUBST,2,10,1
+SOLVE

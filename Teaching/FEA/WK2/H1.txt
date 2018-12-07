@@ -1,0 +1,132 @@
+!* FEA computer laboratory H1 problem
+!*
+!* STATIC ANALYSIS OF A TUBE COMPENSATOR
+!*
+!* created by Tamas Poloskei
+!* 2017. February 14.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!*
+t = 5
+elast = 2E5
+nu = 0.3
+F = 1000
+p = 0.2
+!*
+/COM,  Structural
+!*
+/PREP7  
+!* element type definition
+!*  
+ET,1,SHELL181  
+!*
+!* define the material properties
+!* elasticity
+!* 'Temperatures' must be defined first
+MPTEMP,
+MPTEMP,1,0  
+MPDATA,EX,1,,elast  
+MPDATA,PRXY,1,,nu   
+!*
+!* shell lay-up definition
+sect,1,shell 
+secdata, t,1,0.0,3  
+secoffset,MID   
+!*
+!* creating the keypoints
+K,1,0,0 
+K,2,0,220   
+K,3,300,0   
+K,4,240,60  
+K,5,140,60  
+K,6,100,100 
+K,7,100,220 
+K,8,240,0   
+K,9,140,100  
+!*
+!* creating the contour of the tube
+LARC,3,4,8,60   
+L,4,5   
+LARC,5,6,9,40   
+L,6,7   
+!*
+!* creating the surfaces
+AROTAT, 1, 2, 3, 4, , , 1, 2, -90, 1
+!*
+!* setting the number of finite elements on the meridian curves
+LESIZE,9, , ,36
+LESIZE,10, , ,36
+LESIZE,11, , ,36
+LESIZE,12, , ,36
+LESIZE,13, , ,36
+!*
+!* setting the number of finite elements of the contour curves
+LESIZE,1,,,10
+LESIZE,5,,,10
+LESIZE,2,,,8
+LESIZE,6,,,8
+LESIZE,3,,,8
+LESIZE,7,,,8
+LESIZE,4,,,12
+LESIZE,8,,,12
+!*
+!* mesh the areas using mapped mesh
+MSHKEY,1
+AMESH,ALL
+!*
+!* isometric view
+/VIEW,1,1,1,1   
+/ANG,1  
+/REP,FAST
+!* we can see that the orientation of one of the area is the opposite of the others (purple - turquoise)
+!*
+!* defining the kinematic constraints (left and right)
+*DO, III, 1, 4,1
+DL,III,,UZ,0  
+DL,III,,ROTX,0
+DL,III,,ROTY,0
+DL,III + 4,,UX,0  
+DL,III + 4,,ROTY,0
+DL,III + 4,,ROTZ,0 
+*ENDDO
+!*
+!* bottom
+DL,9,,UY,0
+DL,9,,ROTX,0
+DL,9,,ROTZ,0
+!*
+!* reverse the normal of area 2, to achieve an identical normal of the surfaces
+AREVERSE,2,0  
+!*
+!* define the force on the top part
+!* select the top line
+LSEL,S,,,13 
+!*
+!* select the nodes attached to it
+NSLL,S,1
+!*
+!* put the same amount force on all the nodes (36 elements -> 37 nodes)
+F,ALL,FY,-F/4/37
+ALLSEL,ALL  
+!*
+!* write loadstep file
+LSWRITE,1
+!* 
+!* delete all active nodal loads
+FDELE,ALL,ALL  
+!*
+!* define uniform pressure on all areas
+SFA,ALL,2,PRES,p   
+LSWRITE,2
+FINISH
+!* solve the finite element equation K.U = F, for loadstep 1 and 2
+/SOL
+LSSOLVE,1,2,1,  
+!* postprocessing
+/POST1 
+!*
+!* create the load cases
+LCDEF,1,1,Last, 
+LCDEF,2,2,Last, 
+!*

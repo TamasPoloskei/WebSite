@@ -1,0 +1,217 @@
+!* FEA computer laboratory R1 problem
+!*
+!* STATIC ANALYSIS OF A 2D BEAM STRUCTURE
+!*
+!* created by Tamas Poloskei
+!* 2017. February 9.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!* lowecase or uppercase doesn't matter
+W1 = 50
+W2 = 30
+g = 9810
+p1 = 0.5
+p2 = 0.2
+ELAST = 2E5
+NU = 0.3
+RHO = 7.8E-9
+
+/COM,  Structural
+
+/PREP7  
+!*  set element type
+ET,1,BEAM188
+
+!* define section 1, hollow rectangle
+SECTYPE,   1, BEAM, HREC
+SECOFFSET, CENT 
+SECDATA,W1,30,3,3,3,3 
+
+!* define section 2, hollow rectangle
+SECTYPE,   2, BEAM, HREC
+SECOFFSET, CENT 
+SECDATA,W2,30,3,3,3,3
+
+!* define the material properties
+!* elasticity
+!* Temperatures must be defined first
+MPTEMP
+MPTEMP,1,0  
+MPDATA,EX,1,,ELAST  
+MPDATA,PRXY,1,,NU   
+
+!* density
+!* Temperatures must be defined first
+MPTEMP  
+MPTEMP,1,0  
+MPDATA,DENS,1,,RHO  
+
+!* defining the keypoints
+K,1,-3000,
+K,2,-3000,2000
+K,3,-3000,3500
+K,4,-2500,3000
+K,5,-1500,3000
+K,6,0,3000
+K,7,0,4000
+K,8,-1500,4500
+K,9,-2000,2000
+
+!* creating the straight lines
+L,1,2   !*1
+L,2,3   !*2
+L,3,4   !*3
+L,4,5   !*4
+L,5,6   !*5
+L,6,7	!*6
+L,1,4   !*7
+L,3,7   !*8
+L,2,9   !*9
+L,5,8	!*10
+
+!* intersect the lines, to create the required keypoint locations
+LINL,8,10
+LINL,7,9
+
+!* create the new lines
+L,1,8   
+L,8,4   
+L,2,8   
+L,3,10  
+L,5,10  
+L,10,7  
+L,4,10  
+L,6,10 
+!* reflect the geometry using the Y-Z plane
+LSYMM,X,ALL
+!* merge the overlapping keypoints
+NUMMRG,KP,0.01, , ,LOW  
+!* setting the avarage element length
+LESIZE,ALL,100
+
+!* mesh the outer lines with the thicker crossection
+SECNUM,1
+
+LMESH,1,2   
+LMESH,4,5   
+LMESH,7,8   
+LMESH,10
+LMESH,12
+LMESH,15,16 
+LMESH,18,19 
+LMESH,21,22
+LMESH,24
+LMESH,26
+
+!* mesh the inner lines (stiffeners) with the thinner crossection
+SECNUM,2
+LMESH,3
+LMESH,6
+LMESH,9
+LMESH,11
+LMESH,13,14
+LMESH,17
+LMESH,23
+LMESH,25
+LMESH,27,28
+
+!* kinematic constraints
+!* fixtures on the 'ground'
+DK,1,ALL,0
+DK,9,ALL,0
+!* plane model
+D,ALL,UZ,0
+!* loads
+!* select the left side on the 'roof' and the elements attached to it
+LSEL,S,,,10,12,2
+ESLL,S  
+!* apply the pressure
+SFBEAM,ALL,2,PRES,P1
+!* select everything and do this 2 more times for the right side of the 'roof' and the 'wall' found on the right side
+ALLSEL,ALL 
+!*
+LSEL,S,,,12
+ESLL,S  
+SFBEAM,ALL,2,PRES,P1
+ALLSEL,ALL 
+!*
+LSEL,S,,,24,26,2
+ESLL,S  
+SFBEAM,ALL,2,PRES,-P1
+ALLSEL,ALL 
+!*
+LSEL,S,,,15,16
+ESLL,S  
+SFBEAM,ALL,2,PRES,-P2
+ALLSEL,ALL 
+FINISH  
+!*
+!* solve the finite element equation K.U = F
+/SOL
+SOLVE
+
+!* postprocessing
+/POST1
+!* define the element tables
+ETABLE,FXI,SMISC, 1 
+ETABLE,FXJ,SMISC, 14
+!*
+ETABLE,MZI,SMISC, 3 
+ETABLE,MZJ,SMISC, 16
+!*
+ETABLE,SFYI,SMISC, 6 
+ETABLE,SFYJ,SMISC, 19
+!*
+ETABLE,EXI,SMISC, 7 
+ETABLE,EXJ,SMISC, 20
+!*
+ETABLE,EPELBYTI,SMISC, 42 
+ETABLE,EPELBYTJ,SMISC, 47
+!*
+ETABLE,EPELBYBI,SMISC, 43 
+ETABLE,EPELBYBJ,SMISC, 48
+!*
+ETABLE,SDIRI,SMISC, 31 
+ETABLE,SDIRJ,SMISC, 36
+!*
+ETABLE,SBYTI,SMISC, 32 
+ETABLE,SBYTJ,SMISC, 37
+!*
+ETABLE,SBYBI,SMISC, 33 
+ETABLE,SBYBJ,SMISC, 38
+!* plotting the element tables on the structure and saving them as pictures in the project's folder
+!* be aware that on my computer the size of the pictures were ~1.4MB
+!* changing the background color to white
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+PLLS,FXI,FXJ,1,0,0  
+/IMAGE,SAVE,axial_force,bmp  
+!*
+PLLS,MZI,MZJ,1,0,0  
+/IMAGE,SAVE,bending_moment,bmp  
+!*
+PLLS,SFYI,SFYJ,1,0,0  
+/IMAGE,SAVE,shear_force,bmp  
+!*
+PLLS,SFYI,SFYJ,1,0,0  
+/IMAGE,SAVE,shear_force,bmp  
+!*
+PLLS,EXI,EXJ,1,0,0  
+/IMAGE,SAVE,axial_strain,bmp  
+!*
+PLLS,EPELBYTI,EPELBYTJ,1,0,0  
+/IMAGE,SAVE,bending_strain_top,bmp  
+!*
+PLLS,EPELBYBI,EPELBYBJ,1,0,0
+/IMAGE,SAVE,bending_strain_bottom,bmp
+!*
+PLLS,SDIRI,SDIRJ,1,0,0
+/IMAGE,SAVE,axial_stress,bmp
+!*
+PLLS,SBYTI,SBYTJ,1,0,0
+/IMAGE,SAVE,bending_stress_top,bmp
+!*
+PLLS,SBYBI,SBYBJ,1,0,0
+/IMAGE,SAVE,bending_stress_bottom,bmp

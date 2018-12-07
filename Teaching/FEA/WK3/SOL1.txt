@@ -1,0 +1,125 @@
+!* FEA computer laboratory SOL1 problem
+!*
+!* STATIC ANALYSIS OF A SWITCH BAR
+!*
+!* created by Tamas Poloskei
+!* 2017. February 22.
+!*
+!* covert everything to a consistent unit system
+!* [N],[Nmm],[N/mm^2=MPa],[N/mm]
+!*
+/COM,  Structural   
+!*  
+/PREP7  
+/VIEW,1,1,1,1   
+/ANG,1  
+/REP,FAST   
+!*
+/RGB,INDEX,100,100,100,0
+/RGB,INDEX,0,0,0,15 
+!*
+ELAST = 2E5
+NU = 0.3
+P1 = 6
+P2 = 8
+!*
+!*  set element type 
+ET,1,SOLID185   
+!*
+!* define the material properties
+!* elasticity
+!* Temperatures must be defined first
+MPTEMP
+MPTEMP,1,0  
+MPDATA,EX,1,,ELAST  
+MPDATA,PRXY,1,,nu   
+!*
+!* rotate the workplane about Y
+WPROTA,,,90.0
+!*
+!* create the first rectangle
+BLC4,0,0,50,60  
+!*
+!* offset the working plane
+WPOFFS,,,150
+!*
+!* create the second rectangle
+BLC4,0,0,50,30  
+!*
+!* connect the corners to create the volume
+V,1,2,3,4,5,6,7,8   
+!*
+!* offset the workplane
+WPOFFS,60,,
+!*
+!* create keypoints
+K,9,150,0,-60
+K,10,150,30,-60
+!*
+!* connect them
+L,9,10
+!*
+!* rotate the workplane
+WPROTA,,,90.0
+!*
+!* rotate an area to obtain the second volume
+VROTAT,2,,,,,,9,10,90,1
+!*
+!* extrude an area to obtain the third volume
+VEXT,11,,,0,0,-30
+
+!*
+!* set element numbers on given lines
+*DO, III, 9, 12
+LESIZE,III,,,20
+*ENDDO
+*DO, III, 1, 4
+LESIZE,III,,,8
+LESIZE,III+4,,,8
+LESIZE,III+13,,,8
+LESIZE,III+21,,,8
+*ENDDO
+
+*DO, III, 18, 21
+LESIZE,III,,,10
+*ENDDO
+
+*DO, III, 26, 29
+LESIZE,III,,,6
+*ENDDO
+
+!*
+!* create 3D mapped mesh on volume 1 and 3
+MSHAPE,0,3d 
+MSHKEY,1
+VMESH,1  
+VMESH,3  
+MSHKEY,0
+!*
+!* create swept mesh on volume 2
+VSWEEP,2
+!*
+!* apply geometric constraints
+DA,1,ALL,
+!*
+!* create local coordinatesystem
+CSKP,11,0,16,12,17,1,1
+DSYS,11
+!*
+!* apply first ramped distributed load
+SFGRAD,PRES,11,Z,,p1/50,   
+SFA,15,1,PRES,p1  
+!*
+!* apply second ramped distributed load
+SFGRAD,PRES,11,X,,p2/30
+SFA,14,1,PRES,0 
+
+DA,1,ALL,0  
+
+FINISH
+
+/SOL
+SOLVE
+FINISH
+/POST1
+PLNSOL, U,X, 2,1.0  

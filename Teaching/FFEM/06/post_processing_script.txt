@@ -1,0 +1,82 @@
+/POST1
+/VIEW,1,,,1 
+/ANG,1
+PLNSOL,U,Y,1,1.0
+/IMAGE,SAVE,disp_y,png
+!
+! axial stress
+ETABLE,SDIRI,LS,1
+ETABLE,SDIRJ,LS,4
+!
+! bending stress +y
+ETABLE,SBYTI,LS,2
+ETABLE,SBYTJ,LS,5
+!
+! bending stress -y
+ETABLE,SBYBI,LS,3
+ETABLE,SBYBJ,LS,6
+!
+! maximum stress (normal + bending)
+ETABLE,SMAXI,NMISC, 1
+ETABLE,SMAXJ,NMISC, 3
+!
+! minimum stress (normal + bending)
+ETABLE,SMINI,NMISC, 2
+ETABLE,SMINJ,NMISC, 4
+!
+! section force, normal
+ETABLE,MFORXI,SMISC, 1
+ETABLE,MFORXJ,SMISC, 7
+!
+! section force, shear
+ETABLE,MFORYI,SMISC, 2
+ETABLE,MFORYJ,SMISC, 8
+!
+! section force, moment
+ETABLE,MMOMZI,SMISC, 6
+ETABLE,MMOMZJ,SMISC, 12
+!
+! axial strain
+ETABLE,EPELDIRI,LEPEL, 1
+ETABLE,EPELDIRJ,LEPEL, 4
+!
+! bending strain +y
+ETABLE,EPELBYTI,LEPEL, 2
+ETABLE,EPELBYTJ,LEPEL, 5
+!
+! bending strain -y
+ETABLE,EPELBYBI,LEPEL, 3
+ETABLE,EPELBYBJ,LEPEL, 6
+!
+PLLS,SDIRI,SDIRJ,1,0,0
+/IMAGE,SAVE,axial_stress,png
+!
+PLLS,SBYTI,SBYTJ,1,0,0
+/IMAGE,SAVE,bending_stress_ty,png
+!
+PLLS,SBYBI,SBYBJ,1,0,0
+/IMAGE,SAVE,bending_stress_by,png
+!
+PLLS,SMAXI,SMAXJ,1,0,0
+/IMAGE,SAVE,max_stress,png
+!
+PLLS,SMINI,SMINJ,1,0,0
+/IMAGE,SAVE,min_stress,png
+!
+PLLS,MFORXI,MFORXJ,1,0,0
+/IMAGE,SAVE,normal_force,png
+!
+PLLS,MFORYI,MFORYJ,1,0,0
+/IMAGE,SAVE,shear_force,png
+!
+PLLS,MMOMZI,MMOMZJ,1,0,0
+/IMAGE,SAVE,bending_moment,png
+!
+PLLS,EPELDIRI,EPELDIRJ,1,0,0
+/IMAGE,SAVE,axial_strain,png
+!
+PLLS,EPELBYTI,EPELBYTJ,1,0,0
+/IMAGE,SAVE,bending_strain_ty,png
+!
+PLLS,EPELBYBI,EPELBYBJ,1,0,0
+/IMAGE,SAVE,bending_strain_by,png

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2e01d62e-99a3-4ebc-bccb-03c1096d74bf" name="Default Changelist" comment="" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Sear</find>
+      <find>All ri</find>
+      <find>dynami</find>
+      <find>secti</find>
+      <find>111</find>
+      <find>table</find>
+      <find>content</find>
+      <find>.content</find>
+      <find>Dyna</find>
+      <find>table-</find>
+      <find>main</find>
+      <find>thead</find>
+      <find>curri</find>
+      <find>font</find>
+      <find>educa</find>
+      <find>education_</find>
+      <find>Ipsum sed</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>teaching_</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/../html5up-editorial/index.html" />
+        <option value="$PROJECT_DIR$/assets/css/main.css" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/extras.html" />
+        <option value="$PROJECT_DIR$/teaching_dynamics.html" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-1474" />
+    <option name="y" value="-552" />
+    <option name="width" value="974" />
+    <option name="height" value="745" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
+              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
+              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
+              <item name="Dynamics" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2e01d62e-99a3-4ebc-bccb-03c1096d74bf" name="Default Changelist" comment="" />
+      <created>1544169966989</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1544169966989</updated>
+      <workItem from="1544169968295" duration="15245000" />
+      <workItem from="1544188695101" duration="4333000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="19578000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-1928" y="-533" width="1936" height="1066" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17702845" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../html5up-editorial/index.html" />
+    <entry file="file://$PROJECT_DIR$/generic.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="46" column="36" lean-forward="true" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/elements.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="659">
+          <caret line="67" column="36" selection-start-line="67" selection-start-column="36" selection-end-line="67" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teaching_dynamics.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="27" column="61" lean-forward="true" selection-start-line="27" selection-start-column="61" selection-end-line="27" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3009">
+          <caret line="183" column="18" lean-forward="true" selection-start-line="183" selection-start-column="18" selection-end-line="183" selection-end-column="18" />
+          <folding>
+            <element signature="e#1113#1119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/extras.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="88" column="10" selection-start-line="88" selection-start-column="10" selection-end-line="88" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="119" column="12" selection-start-line="119" selection-start-column="8" selection-end-line="119" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
