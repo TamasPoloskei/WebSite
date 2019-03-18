@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e01d62e-99a3-4ebc-bccb-03c1096d74bf" name="Default Changelist" comment="" />
+    <list default="true" id="2e01d62e-99a3-4ebc-bccb-03c1096d74bf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/teaching_FFEM.html" beforeDir="false" afterPath="$PROJECT_DIR$/teaching_FFEM.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/teaching_dynamics.html" beforeDir="false" afterPath="$PROJECT_DIR$/teaching_dynamics.html" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -81,9 +84,9 @@
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/research.html" />
         <option value="$PROJECT_DIR$/teaching_SoM.html" />
-        <option value="$PROJECT_DIR$/teaching_FFEM.html" />
         <option value="$PROJECT_DIR$/teaching_FEA.html" />
         <option value="$PROJECT_DIR$/teaching_dynamics.html" />
+        <option value="$PROJECT_DIR$/teaching_FFEM.html" />
       </list>
     </option>
   </component>
@@ -126,46 +129,6 @@
               <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
               <item name="WebSite" type="462c0819:PsiDirectoryNode" />
               <item name="Teaching" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
-              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
-              <item name="Dynamics" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
-              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
-              <item name="FFEM" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
-              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
-              <item name="FFEM" type="462c0819:PsiDirectoryNode" />
-              <item name="06" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
-              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
-              <item name="FFEM" type="462c0819:PsiDirectoryNode" />
-              <item name="09" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
-              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
-              <item name="FFEM" type="462c0819:PsiDirectoryNode" />
-              <item name="11" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebSite" type="462c0819:PsiDirectoryNode" />
-              <item name="Teaching" type="462c0819:PsiDirectoryNode" />
-              <item name="FFEM" type="462c0819:PsiDirectoryNode" />
-              <item name="12" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WebSite" type="b2602c69:ProjectViewProjectNode" />
@@ -216,14 +179,15 @@
       <workItem from="1544358016812" duration="13632000" />
       <workItem from="1544382564685" duration="690000" />
       <workItem from="1544696661881" duration="3260000" />
+      <workItem from="1550139779530" duration="540000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38061000" />
+    <option name="totallyTimeSpent" value="38601000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1928" y="-533" width="1936" height="1066" extended-state="6" />
+    <frame x="-1928" y="-939" width="1936" height="1066" extended-state="6" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17702845" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -270,28 +234,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/teaching_dynamics.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="31" column="70" lean-forward="true" selection-start-line="31" selection-start-column="70" selection-end-line="31" selection-end-column="70" />
-          <folding>
-            <element signature="e#2439#2445#0" expanded="true" />
-            <element signature="e#2549#2555#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/elements.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="848">
           <caret line="314" column="74" selection-start-line="314" selection-start-column="71" selection-end-line="314" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/teaching_FFEM.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="848">
-          <caret line="93" column="34" selection-start-line="93" selection-start-column="34" selection-end-line="93" selection-end-column="34" />
         </state>
       </provider>
     </entry>
@@ -320,6 +266,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="90" column="10" selection-start-line="90" selection-start-column="10" selection-end-line="90" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teaching_dynamics.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="55" column="102" selection-start-line="55" selection-start-column="102" selection-end-line="55" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/teaching_FFEM.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="43" column="71" lean-forward="true" selection-start-line="43" selection-start-column="71" selection-end-line="43" selection-end-column="71" />
+          <folding>
+            <element signature="e#2178#2184#0" expanded="true" />
+            <element signature="e#2296#2302#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
